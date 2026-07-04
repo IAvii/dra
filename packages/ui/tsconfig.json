@@ -1,5 +1,5 @@
 {
-  "extends": "@repo/typescript-config/react-library",
+  "extends": "@draw/typescript-config/react-library",
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist",

@@ -1,5 +1,5 @@
 {
-  "extends": "@repo/typescript-config/nextjs",
+  "extends": "@draw/typescript-config/nextjs",
   "compilerOptions": {
     "plugins": [
       {

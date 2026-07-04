@@ -1,5 +1,5 @@
 {
-  "extends": "@repo/typescript-config/base",
+  "extends": "@draw/typescript-config/base",
   "compilerOptions": {
   }
 }

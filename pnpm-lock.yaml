@@ -22,7 +22,7 @@ importers:
 
   apps/web:
     dependencies:
-      '@repo/ui':
+      '@draw/ui':
         specifier: workspace:*
         version: link:../../packages/ui
       next:
@@ -35,10 +35,10 @@ importers:
         specifier: ^19.2.0
         version: 19.2.0(react@19.2.0)
     devDependencies:
-      '@repo/eslint-config':
+      '@draw/eslint-config':
         specifier: workspace:*
         version: link:../../tooling/eslint-config
-      '@repo/typescript-config':
+      '@draw/typescript-config':
         specifier: workspace:*
         version: link:../../tooling/typescript-config
       '@types/node':
@@ -68,10 +68,10 @@ importers:
         specifier: ^19.2.0
         version: 19.2.0(react@19.2.0)
     devDependencies:
-      '@repo/eslint-config':
+      '@draw/eslint-config':
         specifier: workspace:*
         version: link:../../tooling/eslint-config
-      '@repo/typescript-config':
+      '@draw/typescript-config':
         specifier: workspace:*
         version: link:../../tooling/typescript-config
       '@types/node':
