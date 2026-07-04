@@ -18,7 +18,14 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
 
-  apps/http-server: {}
+  apps/http-server:
+    devDependencies:
+      '@draw/eslint-config':
+        specifier: workspace:*
+        version: link:../../tooling/eslint-config
+      '@draw/typescript-config':
+        specifier: workspace:*
+        version: link:../../tooling/typescript-config
 
   apps/web:
     dependencies:
@@ -57,7 +64,14 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
 
-  apps/ws-server: {}
+  apps/ws-server:
+    devDependencies:
+      '@draw/eslint-config':
+        specifier: workspace:*
+        version: link:../../tooling/eslint-config
+      '@draw/typescript-config':
+        specifier: workspace:*
+        version: link:../../tooling/typescript-config
 
   packages/ui:
     dependencies:
