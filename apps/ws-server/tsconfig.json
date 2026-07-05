@@ -1,5 +1,4 @@
 {
   "extends": "@draw/typescript-config/node",
-  "compilerOptions": {
-  }
+  "include": ["./src"]
 }

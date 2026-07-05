@@ -1,5 +1,7 @@
 {
   "extends": "@draw/typescript-config/node",
   "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist"
   }
 }
