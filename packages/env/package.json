@@ -1,0 +1,27 @@
+{
+  "name": "@draw/env",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./http-server": "./src/http-server.ts",
+    "./web": "./src/web.ts",
+    "./shared": "./src/shared.ts",
+    "./ws-server": "./src/ws-server.ts"
+  },
+  "scripts": {
+    "lint": "eslint . --max-warnings 0",
+    "check-types": "tsc --noEmit",
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@draw/eslint-config": "workspace:*",
+    "@draw/typescript-config": "workspace:*",
+    "eslint": "^9.39.1",
+    "typescript": "^6.0.3"
+  }
+}

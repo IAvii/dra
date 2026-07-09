@@ -29,12 +29,18 @@ importers:
 
   apps/http-server:
     devDependencies:
+      '@draw/env':
+        specifier: workspace:*
+        version: link:../../packages/env
       '@draw/eslint-config':
         specifier: workspace:*
         version: link:../../tooling/eslint-config
       '@draw/typescript-config':
         specifier: workspace:*
         version: link:../../tooling/typescript-config
+      '@types/node':
+        specifier: ^22.15.3
+        version: 22.15.3
 
   apps/web:
     dependencies:
@@ -96,6 +102,25 @@ importers:
       '@draw/typescript-config':
         specifier: workspace:*
         version: link:../../tooling/typescript-config
+
+  packages/env:
+    dependencies:
+      zod:
+        specifier: ^4.4.3
+        version: 4.4.3
+    devDependencies:
+      '@draw/eslint-config':
+        specifier: workspace:*
+        version: link:../../tooling/eslint-config
+      '@draw/typescript-config':
+        specifier: workspace:*
+        version: link:../../tooling/typescript-config
+      eslint:
+        specifier: ^9.39.1
+        version: 9.39.1(jiti@2.7.0)
+      typescript:
+        specifier: ^6.0.3
+        version: 6.0.3
 
   packages/stores:
     dependencies:
@@ -1992,6 +2017,9 @@ packages:
   yocto-queue@0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
+
+  zod@4.4.3:
+    resolution: {integrity: sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ==}
 
   zustand@5.0.14:
     resolution: {integrity: sha512-/8tAspM5LMPr28b3fwLYrtdj77ECpfZviaP75CMTnwO8ISyaE4GDIG/9rDDYq/cH9D2Xw2A2RXglLInmVBQB/g==}
@@ -3937,6 +3965,8 @@ snapshots:
     optional: true
 
   yocto-queue@0.1.0: {}
+
+  zod@4.4.3: {}
 
   zustand@5.0.14(@types/react@19.2.2)(react@19.2.0):
     optionalDependencies:

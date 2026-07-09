@@ -7,8 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
+    "@draw/env": "workspace:*",
+    "@draw/eslint-config": "workspace:*",
     "@draw/typescript-config": "workspace:*",
-    "@draw/eslint-config": "workspace:*"
+    "@types/node": "^22.15.3"
   },
   "keywords": [],
   "author": "",
