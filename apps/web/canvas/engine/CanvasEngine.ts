@@ -1,10 +1,12 @@
 import { getDevicePixelRatio } from '../utils';
-import { Canvas2DRenderer } from './Canvas2DRenderer';
+import { Canvas2DRenderer } from '../renderer/Canvas2DRenderer';
 
 export class CanvasEngine {
   private readonly canvas: HTMLCanvasElement;
   private readonly ctx: CanvasRenderingContext2D;
   private readonly renderer: Canvas2DRenderer;
+  private frameId: number | null = null;
+  private framePending = false;
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
@@ -12,7 +14,6 @@ export class CanvasEngine {
     this.renderer = new Canvas2DRenderer(this.ctx);
 
     this.initialize();
-    this.renderer.render();
   }
 
   private createContext(): CanvasRenderingContext2D {
@@ -48,10 +49,31 @@ export class CanvasEngine {
 
     this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    this.renderer.render();
+    this.invalidate();
   };
+
+  public invalidate(): void {
+    if (this.framePending) {
+      return;
+    }
+
+    this.framePending = true;
+
+    this.frameId = requestAnimationFrame(() => {
+      this.framePending = false;
+      this.frameId = null;
+
+      this.renderer.render();
+    });
+  }
 
   public destroy(): void {
     this.unregisterEventListeners();
+
+    if (this.frameId !== null) {
+      cancelAnimationFrame(this.frameId);
+      this.frameId = null;
+      this.framePending = false;
+    }
   }
 }
