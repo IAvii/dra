@@ -15,9 +15,9 @@ export class CanvasEngine {
     this.ctx = this.createContext();
     this.scene = new Scene();
 
-    this.renderer = new Canvas2DRenderer(this.ctx, this.scene);
+    this.renderer = new Canvas2DRenderer(this.ctx);
 
-    this.scene.add({
+    this.scene.addShape({
       id: crypto.randomUUID(),
       type: ShapeType.Rectangle,
       x: 100,
@@ -75,7 +75,7 @@ export class CanvasEngine {
       this.framePending = false;
       this.frameId = null;
 
-      this.renderer.render();
+      this.renderer.render(this.scene);
     });
   }
 

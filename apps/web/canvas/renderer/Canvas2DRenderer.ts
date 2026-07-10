@@ -2,17 +2,14 @@ import { Scene } from '../scene';
 import { Rectangle, ShapeType } from '../scene';
 
 export class Canvas2DRenderer {
-  constructor(
-    private readonly ctx: CanvasRenderingContext2D,
-    private readonly scene: Scene,
-  ) {}
+  constructor(private readonly ctx: CanvasRenderingContext2D) {}
 
-  public render(): void {
+  public render(scene: Scene): void {
     this.beginFrame();
 
     this.clear();
 
-    this.renderScene();
+    this.renderScene(scene);
 
     this.renderOverlay();
 
@@ -27,8 +24,8 @@ export class Canvas2DRenderer {
     this.ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
-  private renderScene(): void {
-    for (const shape of this.scene.getShapes()) {
+  private renderScene(scene: Scene): void {
+    for (const shape of scene.getAllShapes()) {
       switch (shape.type) {
         case ShapeType.Rectangle:
           this.renderRectangle(shape);
