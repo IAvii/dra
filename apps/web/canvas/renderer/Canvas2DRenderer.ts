@@ -1,15 +1,20 @@
+import { Camera } from '../camera';
 import { Scene } from '../scene';
 import { Rectangle, ShapeType } from '../scene';
 
 export class Canvas2DRenderer {
   constructor(private readonly ctx: CanvasRenderingContext2D) {}
 
-  public render(scene: Scene): void {
+  public render(scene: Scene, camera: Camera): void {
     this.beginFrame();
 
     this.clear();
 
+    this.applyCameraTransform(camera);
+
     this.renderScene(scene);
+
+    this.resetTransform();
 
     this.renderOverlay();
 
@@ -19,9 +24,21 @@ export class Canvas2DRenderer {
   private beginFrame(): void {}
 
   private clear(): void {
-    const { canvas } = this.ctx;
+    const { width, height } = this.ctx.canvas.getBoundingClientRect();
 
-    this.ctx.clearRect(0, 0, canvas.width, canvas.height);
+    this.ctx.clearRect(0, 0, width, height);
+  }
+
+  private applyCameraTransform(camera: Camera): void {
+    const { x, y } = camera.getState();
+
+    this.ctx.save();
+
+    this.ctx.translate(-x, -y);
+  }
+
+  private resetTransform(): void {
+    this.ctx.restore();
   }
 
   private renderScene(scene: Scene): void {

@@ -1,6 +1,7 @@
 import { getDevicePixelRatio } from '../utils';
 import { Canvas2DRenderer } from '../renderer/Canvas2DRenderer';
 import { Scene, ShapeType } from '../scene';
+import { Camera } from '../camera';
 
 export class CanvasEngine {
   private readonly canvas: HTMLCanvasElement;
@@ -9,11 +10,13 @@ export class CanvasEngine {
   private frameId: number | null = null;
   private framePending = false;
   private readonly scene: Scene;
+  private readonly camera: Camera;
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
     this.ctx = this.createContext();
     this.scene = new Scene();
+    this.camera = new Camera();
 
     this.renderer = new Canvas2DRenderer(this.ctx);
 
@@ -56,6 +59,8 @@ export class CanvasEngine {
 
     const { width, height } = this.canvas.getBoundingClientRect();
 
+    this.camera.setViewport(width, height);
+
     this.canvas.width = Math.floor(width * dpr);
     this.canvas.height = Math.floor(height * dpr);
 
@@ -75,7 +80,7 @@ export class CanvasEngine {
       this.framePending = false;
       this.frameId = null;
 
-      this.renderer.render(this.scene);
+      this.renderer.render(this.scene, this.camera);
     });
   }
 
