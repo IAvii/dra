@@ -1,5 +1,6 @@
 import { getDevicePixelRatio } from '../utils';
 import { Canvas2DRenderer } from '../renderer/Canvas2DRenderer';
+import { Scene, ShapeType } from '../scene';
 
 export class CanvasEngine {
   private readonly canvas: HTMLCanvasElement;
@@ -7,12 +8,23 @@ export class CanvasEngine {
   private readonly renderer: Canvas2DRenderer;
   private frameId: number | null = null;
   private framePending = false;
+  private readonly scene: Scene;
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
     this.ctx = this.createContext();
-    this.renderer = new Canvas2DRenderer(this.ctx);
+    this.scene = new Scene();
 
+    this.renderer = new Canvas2DRenderer(this.ctx, this.scene);
+
+    this.scene.add({
+      id: crypto.randomUUID(),
+      type: ShapeType.Rectangle,
+      x: 100,
+      y: 100,
+      width: 200,
+      height: 120,
+    });
     this.initialize();
   }
 
