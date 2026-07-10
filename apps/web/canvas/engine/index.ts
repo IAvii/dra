@@ -1,2 +1,2 @@
 export * from './CanvasEngine';
-export * from './Canvas2DRenderer';
+export * from '../renderer/Canvas2DRenderer';
