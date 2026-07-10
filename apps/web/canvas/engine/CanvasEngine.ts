@@ -1,14 +1,18 @@
 import { getDevicePixelRatio } from '../utils';
+import { Canvas2DRenderer } from './Canvas2DRenderer';
 
 export class CanvasEngine {
   private readonly canvas: HTMLCanvasElement;
   private readonly ctx: CanvasRenderingContext2D;
+  private readonly renderer: Canvas2DRenderer;
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
     this.ctx = this.createContext();
+    this.renderer = new Canvas2DRenderer(this.ctx);
 
     this.initialize();
+    this.renderer.render();
   }
 
   private createContext(): CanvasRenderingContext2D {
@@ -43,6 +47,8 @@ export class CanvasEngine {
     this.canvas.height = Math.floor(height * dpr);
 
     this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    this.renderer.render();
   };
 
   public destroy(): void {
