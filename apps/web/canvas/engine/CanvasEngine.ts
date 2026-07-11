@@ -75,7 +75,7 @@ export class CanvasEngine {
     this.invalidate();
   };
 
-  public invalidate(): void {
+  public invalidate = (): void => {
     if (this.framePending) {
       return;
     }
@@ -88,7 +88,7 @@ export class CanvasEngine {
 
       this.renderer.render(this.scene, this.camera);
     });
-  }
+  };
 
   public destroy(): void {
     this.unregisterEventListeners();

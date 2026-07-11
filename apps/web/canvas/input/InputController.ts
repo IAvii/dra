@@ -51,6 +51,7 @@ export class InputController {
     const dy = event.clientY - this.lastPointerY;
     this.lastPointerX = event.clientX;
     this.lastPointerY = event.clientY;
+    console.log('Panning');
     this.camera.translate(-dx, -dy);
 
     this.invalidate();
@@ -74,9 +75,13 @@ export class InputController {
   private handleWheel = (event: WheelEvent): void => {
     event.preventDefault();
 
-    const factor = event.deltaY < 0 ? 1.1 : 1 / 1.1;
+    if (event.ctrlKey) {
+      const factor = event.deltaY < 0 ? 1.1 : 1 / 1.1;
 
-    this.camera.zoomBy(factor);
+      this.camera.zoomBy(factor);
+    } else {
+      this.camera.translate(event.deltaX, event.deltaY);
+    }
 
     this.invalidate();
   };
