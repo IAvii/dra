@@ -1,6 +1,6 @@
 export class Camera {
-  private x = 0;
-  private y = 0;
+  private positionX = 0;
+  private positionY = 0;
 
   private zoom = 1;
 
@@ -12,13 +12,36 @@ export class Camera {
     this.viewportHeight = height;
   }
 
+  public setPosition(x: number, y: number): void {
+    this.positionX = x;
+    this.positionY = y;
+  }
+
+  public translate(dx: number, dy: number): void {
+    this.positionX += dx;
+    this.positionY += dy;
+  }
+
   public getState() {
     return {
-      x: this.x,
-      y: this.y,
+      x: this.positionX,
+      y: this.positionY,
       zoom: this.zoom,
       viewportWidth: this.viewportWidth,
       viewportHeight: this.viewportHeight,
+    };
+  }
+  public worldToScreen(x: number, y: number): { x: number; y: number } {
+    return {
+      x: x - this.positionX,
+      y: y - this.positionY,
+    };
+  }
+
+  public screenToWorld(x: number, y: number): { x: number; y: number } {
+    return {
+      x: x + this.positionX,
+      y: y + this.positionY,
     };
   }
 }
