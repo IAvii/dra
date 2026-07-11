@@ -2,6 +2,7 @@ import { getDevicePixelRatio } from '../utils';
 import { Canvas2DRenderer } from '../renderer/Canvas2DRenderer';
 import { Scene, ShapeType } from '../scene';
 import { Camera } from '../camera';
+import { InputController } from '../input';
 
 export class CanvasEngine {
   private readonly canvas: HTMLCanvasElement;
@@ -11,12 +12,15 @@ export class CanvasEngine {
   private framePending = false;
   private readonly scene: Scene;
   private readonly camera: Camera;
+  private readonly input: InputController;
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
     this.ctx = this.createContext();
     this.scene = new Scene();
     this.camera = new Camera();
+
+    this.input = new InputController(this.canvas, this.camera, this.invalidate);
 
     this.renderer = new Canvas2DRenderer(this.ctx);
 
@@ -44,6 +48,7 @@ export class CanvasEngine {
   private initialize(): void {
     this.resize();
     this.registerEventListeners();
+    this.input.attach();
   }
 
   private registerEventListeners(): void {
@@ -86,6 +91,8 @@ export class CanvasEngine {
 
   public destroy(): void {
     this.unregisterEventListeners();
+
+    this.input.detach();
 
     if (this.frameId !== null) {
       cancelAnimationFrame(this.frameId);
