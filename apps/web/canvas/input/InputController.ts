@@ -18,6 +18,9 @@ export class InputController {
     this.canvas.addEventListener('pointerup', this.handlePointerUp);
     this.canvas.addEventListener('pointercancel', this.handlePointerUp);
     this.canvas.addEventListener('lostpointercapture', this.handleLostPointerCapture);
+    this.canvas.addEventListener('wheel', this.handleWheel, {
+      passive: false,
+    });
   }
   public detach(): void {
     this.canvas.removeEventListener('pointerdown', this.handlePointerDown);
@@ -25,6 +28,7 @@ export class InputController {
     this.canvas.removeEventListener('pointerup', this.handlePointerUp);
     this.canvas.removeEventListener('pointercancel', this.handlePointerUp);
     this.canvas.removeEventListener('lostpointercapture', this.handleLostPointerCapture);
+    this.canvas.removeEventListener('wheel', this.handleWheel);
   }
   private handlePointerDown = (event: PointerEvent): void => {
     if (event.button !== 1) {
@@ -65,5 +69,15 @@ export class InputController {
 
   private handleLostPointerCapture = (): void => {
     this.isPanning = false;
+  };
+
+  private handleWheel = (event: WheelEvent): void => {
+    event.preventDefault();
+
+    const factor = event.deltaY < 0 ? 1.1 : 1 / 1.1;
+
+    this.camera.zoomBy(factor);
+
+    this.invalidate();
   };
 }

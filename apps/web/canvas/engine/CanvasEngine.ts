@@ -19,6 +19,7 @@ export class CanvasEngine {
     this.ctx = this.createContext();
     this.scene = new Scene();
     this.camera = new Camera();
+    this.camera.setZoom(2);
 
     this.input = new InputController(this.canvas, this.camera, this.invalidate);
 

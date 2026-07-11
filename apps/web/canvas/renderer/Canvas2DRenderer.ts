@@ -35,6 +35,7 @@ export class Canvas2DRenderer {
     this.ctx.save();
 
     this.ctx.translate(-x, -y);
+    this.ctx.scale(camera.getZoom(), camera.getZoom());
   }
 
   private resetTransform(): void {
