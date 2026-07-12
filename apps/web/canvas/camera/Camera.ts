@@ -51,4 +51,34 @@ export class Camera {
       viewportHeight: this.viewportHeight,
     };
   }
+
+  public worldToScreen(x: number, y: number): { x: number; y: number } {
+    const { x: cameraX, y: cameraY } = this.getState();
+    const zoom = this.getZoom();
+
+    return {
+      x: (x - cameraX) * zoom,
+      y: (y - cameraY) * zoom,
+    };
+  }
+
+  public screenToWorld(x: number, y: number): { x: number; y: number } {
+    const { x: cameraX, y: cameraY } = this.getState();
+    const zoom = this.getZoom();
+
+    return {
+      x: x / zoom + cameraX,
+      y: y / zoom + cameraY,
+    };
+  }
+
+  public zoomAt(factor: number, screenX: number, screenY: number): void {
+    const worldBefore = this.screenToWorld(screenX, screenY);
+
+    this.zoomBy(factor);
+
+    const worldAfter = this.screenToWorld(screenX, screenY);
+
+    this.translate(worldBefore.x - worldAfter.x, worldBefore.y - worldAfter.y);
+  }
 }
