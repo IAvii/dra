@@ -42,7 +42,7 @@ export class ViewTransform {
 
     ctx.save();
 
-    ctx.translate(-x, -y);
     ctx.scale(this.camera.getZoom(), this.camera.getZoom());
+    ctx.translate(-x, -y);
   }
 }
