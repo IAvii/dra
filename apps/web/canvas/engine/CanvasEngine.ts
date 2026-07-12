@@ -3,6 +3,7 @@ import { Canvas2DRenderer } from '../renderer/Canvas2DRenderer';
 import { Scene, ShapeType } from '../scene';
 import { Camera } from '../camera';
 import { InputController } from '../input';
+import { ViewTransform } from '../transform';
 
 export class CanvasEngine {
   private readonly canvas: HTMLCanvasElement;
@@ -13,17 +14,18 @@ export class CanvasEngine {
   private readonly scene: Scene;
   private readonly camera: Camera;
   private readonly input: InputController;
+  private readonly transform: ViewTransform;
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
     this.ctx = this.createContext();
     this.scene = new Scene();
     this.camera = new Camera();
-    this.camera.setZoom(2);
+    this.transform = new ViewTransform(this.camera);
+    this.camera.setZoom(0.5);
 
-    this.input = new InputController(this.canvas, this.camera, this.invalidate);
-
-    this.renderer = new Canvas2DRenderer(this.ctx);
+    this.input = new InputController(this.canvas, this.camera, this.transform, this.invalidate);
+    this.renderer = new Canvas2DRenderer(this.ctx, this.transform);
 
     this.scene.addShape({
       id: crypto.randomUUID(),

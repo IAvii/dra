@@ -1,16 +1,19 @@
-import { Camera } from '../camera';
 import { Scene } from '../scene';
 import { Rectangle, ShapeType } from '../scene';
+import { ViewTransform } from '../transform';
 
 export class Canvas2DRenderer {
-  constructor(private readonly ctx: CanvasRenderingContext2D) {}
+  constructor(
+    private readonly ctx: CanvasRenderingContext2D,
+    private readonly transform: ViewTransform,
+  ) {}
 
-  public render(scene: Scene, camera: Camera): void {
+  public render(scene: Scene): void {
     this.beginFrame();
 
     this.clear();
 
-    this.applyCameraTransform(camera);
+    this.applyCameraTransform();
 
     this.renderScene(scene);
 
@@ -29,17 +32,12 @@ export class Canvas2DRenderer {
     this.ctx.clearRect(0, 0, width, height);
   }
 
-  private applyCameraTransform(camera: Camera): void {
-    const { x, y } = camera.getState();
-
-    this.ctx.save();
-
-    this.ctx.translate(-x, -y);
-    this.ctx.scale(camera.getZoom(), camera.getZoom());
+  private applyCameraTransform(): void {
+    this.transform.apply(this.ctx);
   }
 
   private resetTransform(): void {
-    this.ctx.restore();
+    this.transform.restore(this.ctx);
   }
 
   private renderScene(scene: Scene): void {

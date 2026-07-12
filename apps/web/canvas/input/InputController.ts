@@ -1,4 +1,5 @@
 import { Camera } from '../camera';
+import { ViewTransform } from '../transform';
 
 export class InputController {
   private isPanning = false;
@@ -9,6 +10,7 @@ export class InputController {
   constructor(
     private readonly canvas: HTMLCanvasElement,
     private readonly camera: Camera,
+    private readonly transform: ViewTransform,
     private readonly invalidate: () => void,
   ) {}
 
@@ -78,7 +80,7 @@ export class InputController {
     if (event.ctrlKey) {
       const factor = event.deltaY < 0 ? 1.1 : 1 / 1.1;
 
-      this.camera.zoomBy(factor);
+      this.transform.zoomAt(factor, event.offsetX, event.offsetY);
     } else {
       this.camera.translate(event.deltaX, event.deltaY);
     }

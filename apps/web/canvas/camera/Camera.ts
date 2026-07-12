@@ -51,17 +51,4 @@ export class Camera {
       viewportHeight: this.viewportHeight,
     };
   }
-  public worldToScreen(x: number, y: number): { x: number; y: number } {
-    return {
-      x: x - this.positionX,
-      y: y - this.positionY,
-    };
-  }
-
-  public screenToWorld(x: number, y: number): { x: number; y: number } {
-    return {
-      x: x + this.positionX,
-      y: y + this.positionY,
-    };
-  }
 }
