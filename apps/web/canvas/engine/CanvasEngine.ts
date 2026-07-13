@@ -85,7 +85,7 @@ export class CanvasEngine {
       this.framePending = false;
       this.frameId = null;
 
-      this.renderer.render(this.scene);
+      this.renderer.render(this.scene, this.camera);
     });
   };
 
