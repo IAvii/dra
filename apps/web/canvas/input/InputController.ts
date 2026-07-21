@@ -51,8 +51,8 @@ export class InputController {
     const dy = event.clientY - this.lastPointerY;
     this.lastPointerX = event.clientX;
     this.lastPointerY = event.clientY;
-    console.log('Panning');
-    this.camera.translate(-dx, -dy);
+    const zoom = this.camera.getZoom();
+    /*TODO: Recheck if correct*/ this.camera.translate(-dx / zoom, -dy / zoom);
 
     this.invalidate();
   };

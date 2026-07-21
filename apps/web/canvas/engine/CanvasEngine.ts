@@ -47,6 +47,8 @@ export class CanvasEngine {
 
   private initialize(): void {
     this.resize();
+    //TODO: Temporary test
+    this.fitToScreen();
     this.registerEventListeners();
     this.input.attach();
   }
@@ -73,6 +75,17 @@ export class CanvasEngine {
 
     this.invalidate();
   };
+
+  public fitToScreen(): void {
+    const bounds = this.scene.getBounds();
+
+    if (!bounds) {
+      return;
+    }
+
+    this.camera.fitToBounds(bounds);
+    this.invalidate();
+  }
 
   public invalidate = (): void => {
     if (this.framePending) {

@@ -1,3 +1,5 @@
+import { Bounds } from '../scene';
+
 export class Camera {
   private positionX = 0;
   private positionY = 0;
@@ -72,6 +74,11 @@ export class Camera {
     };
   }
 
+  public centerOn(x: number, y: number): void {
+    this.positionX = x - this.viewportWidth / (2 * this.zoom);
+    this.positionY = y - this.viewportHeight / (2 * this.zoom);
+  }
+
   public zoomAt(factor: number, screenX: number, screenY: number): void {
     const worldBefore = this.screenToWorld(screenX, screenY);
 
@@ -80,5 +87,25 @@ export class Camera {
     const worldAfter = this.screenToWorld(screenX, screenY);
 
     this.translate(worldBefore.x - worldAfter.x, worldBefore.y - worldAfter.y);
+  }
+
+  public fitToBounds(bounds: Bounds, padding = 50): void {
+    const width = bounds.maxX - bounds.minX;
+    const height = bounds.maxY - bounds.minY;
+
+    const availableWidth = this.viewportWidth - padding * 2;
+    const availableHeight = this.viewportHeight - padding * 2;
+
+    const zoomX = availableWidth / width;
+    const zoomY = availableHeight / height;
+
+    const zoom = Math.min(zoomX, zoomY);
+
+    this.setZoom(zoom);
+
+    const centerX = (bounds.minX + bounds.maxX) / 2;
+    const centerY = (bounds.minY + bounds.maxY) / 2;
+
+    this.centerOn(centerX, centerY);
   }
 }
