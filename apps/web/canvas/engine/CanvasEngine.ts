@@ -3,6 +3,9 @@ import { Canvas2DRenderer } from '../renderer/Canvas2DRenderer';
 import { Scene, ShapeType } from '../scene';
 import { Camera } from '../camera';
 import { InputController } from '../input';
+import { ToolManager } from '../tools/ToolManager';
+import { ToolContext } from '../tools/Tool';
+import { useToolStore, ToolType } from '@draw/stores/tools';
 
 export class CanvasEngine {
   private readonly canvas: HTMLCanvasElement;
@@ -13,17 +16,32 @@ export class CanvasEngine {
   private readonly scene: Scene;
   private readonly camera: Camera;
   private readonly input: InputController;
+  private readonly toolManager: ToolManager;
+
+  private selectedShapeIds: string[] = [];
+  private selectionBox: { x: number; y: number; width: number; height: number } | null = null;
+
+  private unsubscribeToolStore?: () => void;
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
     this.ctx = this.createContext();
     this.scene = new Scene();
     this.camera = new Camera();
-    this.camera.setZoom(0.5);
+    this.camera.setZoom(1);
 
-    this.input = new InputController(this.canvas, this.camera, this.invalidate);
+    this.toolManager = new ToolManager();
+
+    this.input = new InputController(
+      this.canvas,
+      this.camera,
+      this.toolManager,
+      this.getToolContext,
+      this.invalidate,
+    );
     this.renderer = new Canvas2DRenderer(this.ctx, this.camera);
 
+    // Initial demo shape
     this.scene.addShape({
       id: crypto.randomUUID(),
       type: ShapeType.Rectangle,
@@ -32,25 +50,47 @@ export class CanvasEngine {
       width: 200,
       height: 120,
     });
+
     this.initialize();
   }
 
   private createContext(): CanvasRenderingContext2D {
     const ctx = this.canvas.getContext('2d');
-
     if (!ctx) {
       throw new Error('Failed to acquire 2D rendering ctx.');
     }
-
     return ctx;
   }
 
+  private getToolContext = (): ToolContext => {
+    return {
+      scene: this.scene,
+      camera: this.camera,
+      invalidate: this.invalidate,
+      setSelectedShapeIds: (ids: string[]) => {
+        this.selectedShapeIds = ids;
+        this.invalidate();
+      },
+      getSelectedShapeIds: () => this.selectedShapeIds,
+      setSelectionBox: (box) => {
+        this.selectionBox = box;
+        this.invalidate();
+      },
+      setActiveTool: (tool: ToolType) => {
+        useToolStore.getState().setActiveTool(tool);
+      },
+    };
+  };
+
   private initialize(): void {
     this.resize();
-    //TODO: Temporary test
-    this.fitToScreen();
     this.registerEventListeners();
     this.input.attach();
+
+    // Sync Zustand tool store changes into ToolManager
+    this.unsubscribeToolStore = useToolStore.subscribe((state) => {
+      this.toolManager.setActiveTool(state.activeTool, this.getToolContext());
+    });
   }
 
   private registerEventListeners(): void {
@@ -63,14 +103,11 @@ export class CanvasEngine {
 
   private resize = (): void => {
     const dpr = getDevicePixelRatio();
-
     const { width, height } = this.canvas.getBoundingClientRect();
 
     this.camera.setViewport(width, height);
-
     this.canvas.width = Math.floor(width * dpr);
     this.canvas.height = Math.floor(height * dpr);
-
     this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
     this.invalidate();
@@ -78,33 +115,41 @@ export class CanvasEngine {
 
   public fitToScreen(): void {
     const bounds = this.scene.getBounds();
-
-    if (!bounds) {
-      return;
-    }
-
+    if (!bounds) return;
     this.camera.fitToBounds(bounds);
     this.invalidate();
   }
 
+  public centerCanvas(): void {
+    this.camera.centerCanvas();
+    this.invalidate();
+  }
+
+  public resetZoom(): void {
+    this.camera.resetZoom();
+    this.invalidate();
+  }
+
   public invalidate = (): void => {
-    if (this.framePending) {
-      return;
-    }
+    if (this.framePending) return;
 
     this.framePending = true;
-
     this.frameId = requestAnimationFrame(() => {
       this.framePending = false;
       this.frameId = null;
 
-      this.renderer.render(this.scene, this.camera);
+      this.renderer.render(this.scene, this.camera, {
+        selectedShapeIds: this.selectedShapeIds,
+        selectionBox: this.selectionBox,
+      });
     });
   };
 
   public destroy(): void {
     this.unregisterEventListeners();
-
+    if (this.unsubscribeToolStore) {
+      this.unsubscribeToolStore();
+    }
     this.input.detach();
 
     if (this.frameId !== null) {

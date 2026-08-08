@@ -79,6 +79,19 @@ export class Camera {
     this.positionY = y - this.viewportHeight / (2 * this.zoom);
   }
 
+  public resetZoom(): void {
+    const centerX = this.viewportWidth / 2;
+    const centerY = this.viewportHeight / 2;
+    const worldCenter = this.screenToWorld(centerX, centerY);
+
+    this.setZoom(1);
+    this.centerOn(worldCenter.x, worldCenter.y);
+  }
+
+  public centerCanvas(): void {
+    this.centerOn(0, 0);
+  }
+
   public zoomAt(factor: number, screenX: number, screenY: number): void {
     const worldBefore = this.screenToWorld(screenX, screenY);
 
