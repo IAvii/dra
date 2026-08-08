@@ -1,7 +1,7 @@
 import { BaseShape, ShapeType } from './Shape';
 
-export interface Rectangle extends BaseShape {
-  type: ShapeType.Rectangle;
+export interface Ellipse extends BaseShape {
+  type: ShapeType.Ellipse;
   x: number;
   y: number;
   width: number;

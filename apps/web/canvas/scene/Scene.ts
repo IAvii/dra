@@ -16,6 +16,17 @@ export class Scene {
     }
   }
 
+  public getShapeById(id: string): Shape | undefined {
+    return this.shapes.find((shape) => shape.id === id);
+  }
+
+  public updateShape(updatedShape: Shape): void {
+    const index = this.shapes.findIndex((shape) => shape.id === updatedShape.id);
+    if (index !== -1) {
+      this.shapes[index] = updatedShape;
+    }
+  }
+
   public getBounds(): Bounds | null {
     if (this.shapes.length === 0) {
       return null;
