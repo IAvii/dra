@@ -44,6 +44,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@draw/stores':
+        specifier: workspace:*
+        version: link:../../packages/stores
       '@draw/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -115,6 +118,9 @@ importers:
       '@draw/typescript-config':
         specifier: workspace:*
         version: link:../../tooling/typescript-config
+      '@types/node':
+        specifier: ^22.15.3
+        version: 22.15.3
       eslint:
         specifier: ^9.39.1
         version: 9.39.1(jiti@2.7.0)
