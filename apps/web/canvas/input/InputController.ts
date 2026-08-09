@@ -1,6 +1,7 @@
 import { Camera } from '../camera';
 import { ToolManager } from '../tools/ToolManager';
 import { ToolContext, ToolPointerEvent } from '../tools/Tool';
+import { History } from '../engine/History';
 
 export class InputController {
   private isMiddlePanning = false;
@@ -19,6 +20,7 @@ export class InputController {
     private readonly canvas: HTMLCanvasElement,
     private readonly camera: Camera,
     private readonly toolManager: ToolManager,
+    private readonly history: History,
     private readonly getToolContext: () => ToolContext,
     private readonly invalidate: () => void,
   ) {}
@@ -256,6 +258,21 @@ export class InputController {
       event.preventDefault();
       this.camera.centerCanvas();
       this.invalidate();
+    }
+
+    // Undo / Redo
+    if (event.ctrlKey || event.metaKey) {
+      if (event.key.toLowerCase() === 'z') {
+        event.preventDefault();
+        if (event.shiftKey) {
+          this.history.redo(this.getToolContext().scene);
+        } else {
+          this.history.undo(this.getToolContext().scene);
+        }
+      } else if (event.key.toLowerCase() === 'y') {
+        event.preventDefault();
+        this.history.redo(this.getToolContext().scene);
+      }
     }
   };
 

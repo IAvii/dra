@@ -71,6 +71,8 @@ export class ArrowTool implements Tool {
         if (p2 && Math.hypot(p2[0], p2[1]) < 3) {
           ctx.scene.removeShape(this.currentShapeId);
           ctx.setSelectedShapeIds([]);
+        } else {
+          ctx.history.push([], [{ ...shape }]);
         }
       }
     }

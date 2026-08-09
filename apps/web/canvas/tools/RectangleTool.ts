@@ -61,10 +61,11 @@ export class RectangleTool implements Tool {
   public onPointerUp(event: ToolPointerEvent, ctx: ToolContext): void {
     if (this.currentShapeId) {
       const shape = ctx.scene.getShapeById(this.currentShapeId);
-      // Remove zero-size shapes if clicked without drag
       if (shape && shape.width < 2 && shape.height < 2) {
         ctx.scene.removeShape(this.currentShapeId);
         ctx.setSelectedShapeIds([]);
+      } else if (shape) {
+        ctx.history.push([], [{ ...shape }]);
       }
     }
     this.currentShapeId = null;

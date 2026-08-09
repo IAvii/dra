@@ -6,6 +6,7 @@ import { InputController } from '../input';
 import { ToolManager } from '../tools/ToolManager';
 import { ToolContext } from '../tools/Tool';
 import { useToolStore, ToolType } from '@draw/stores/tools';
+import { History } from './History';
 
 export class CanvasEngine {
   private readonly canvas: HTMLCanvasElement;
@@ -17,6 +18,7 @@ export class CanvasEngine {
   private readonly camera: Camera;
   private readonly input: InputController;
   private readonly toolManager: ToolManager;
+  private readonly history: History;
 
   private selectedShapeIds: string[] = [];
   private selectionBox: { x: number; y: number; width: number; height: number } | null = null;
@@ -31,11 +33,13 @@ export class CanvasEngine {
     this.camera.setZoom(1);
 
     this.toolManager = new ToolManager();
+    this.history = new History();
 
     this.input = new InputController(
       this.canvas,
       this.camera,
       this.toolManager,
+      this.history,
       this.getToolContext,
       this.invalidate,
     );
@@ -79,6 +83,7 @@ export class CanvasEngine {
       setActiveTool: (tool: ToolType) => {
         useToolStore.getState().setActiveTool(tool);
       },
+      history: this.history,
     };
   };
 

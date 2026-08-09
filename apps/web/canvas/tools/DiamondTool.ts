@@ -64,6 +64,8 @@ export class DiamondTool implements Tool {
       if (shape && shape.width < 2 && shape.height < 2) {
         ctx.scene.removeShape(this.currentShapeId);
         ctx.setSelectedShapeIds([]);
+      } else if (shape) {
+        ctx.history.push([], [{ ...shape }]);
       }
     }
     this.currentShapeId = null;

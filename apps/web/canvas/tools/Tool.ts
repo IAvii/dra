@@ -1,7 +1,7 @@
 import { Camera } from '../camera';
 import { Scene } from '../scene';
 import { ToolType } from '@draw/stores/tools';
-
+import { History } from '../engine/History';
 export interface ToolPointerEvent {
   worldX: number;
   worldY: number;
@@ -22,6 +22,7 @@ export interface ToolContext {
   getSelectedShapeIds: () => readonly string[];
   setSelectionBox: (box: { x: number; y: number; width: number; height: number } | null) => void;
   setActiveTool: (tool: ToolType) => void;
+  history: History;
 }
 
 export interface Tool {

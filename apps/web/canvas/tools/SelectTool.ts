@@ -148,6 +148,23 @@ export class SelectTool implements Tool {
   }
 
   public onPointerUp(_event: ToolPointerEvent, ctx: ToolContext): void {
+    if (this.mode !== 'none' && this.mode !== 'marquee') {
+      const before: Shape[] = [];
+      const after: Shape[] = [];
+
+      for (const [id, initialShape] of this.initialShapeSnapshots.entries()) {
+        const currentShape = ctx.scene.getShapeById(id);
+        if (currentShape && JSON.stringify(initialShape) !== JSON.stringify(currentShape)) {
+          before.push(initialShape);
+          after.push({ ...currentShape });
+        }
+      }
+
+      if (before.length > 0) {
+        ctx.history.push(before, after);
+      }
+    }
+
     this.mode = 'none';
     this.initialShapeSnapshots.clear();
     ctx.setSelectionBox(null);
