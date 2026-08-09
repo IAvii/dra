@@ -22,6 +22,14 @@ export interface BaseShape {
   width: number;
   height: number;
   rotation?: number;
+  /** Default: `#1e1e1e` */
+  strokeColor?: string;
+  /** Default: `transparent` */
+  fillColor?: string;
+  /** Default: `2` (pixels) */
+  strokeWidth?: number;
+  /** Default: `1` (fully opaque) */
+  opacity?: number;
 }
 
 export type Shape = Rectangle | Ellipse | Diamond | Line | Arrow;

@@ -1,5 +1,6 @@
 import { Camera } from '../camera';
 import { Scene } from '../scene';
+import { ToolType } from '@draw/stores/tools';
 
 export interface ToolPointerEvent {
   worldX: number;
@@ -20,7 +21,7 @@ export interface ToolContext {
   setSelectedShapeIds: (ids: string[]) => void;
   getSelectedShapeIds: () => readonly string[];
   setSelectionBox: (box: { x: number; y: number; width: number; height: number } | null) => void;
-  setActiveTool: (tool: 'select' | 'rectangle' | 'ellipse' | 'diamond' | 'line' | 'arrow') => void;
+  setActiveTool: (tool: ToolType) => void;
 }
 
 export interface Tool {

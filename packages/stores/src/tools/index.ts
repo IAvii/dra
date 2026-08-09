@@ -1,6 +1,14 @@
 import { create } from 'zustand';
 
-export type ToolType = 'select' | 'rectangle' | 'ellipse' | 'diamond' | 'line' | 'arrow';
+export type ToolType =
+  | 'select'
+  | 'rectangle'
+  | 'ellipse'
+  | 'diamond'
+  | 'line'
+  | 'arrow'
+  | 'pencil'
+  | 'text';
 
 interface ToolState {
   activeTool: ToolType;
