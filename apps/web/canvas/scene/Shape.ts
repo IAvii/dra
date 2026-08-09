@@ -3,6 +3,7 @@ import type { Ellipse } from './Ellipse';
 import type { Diamond } from './Diamond';
 import type { Line } from './Line';
 import type { Arrow } from './Arrow';
+import type { Pencil } from './Pencil';
 
 export enum ShapeType {
   Rectangle = 'rectangle',
@@ -32,4 +33,4 @@ export interface BaseShape {
   opacity?: number;
 }
 
-export type Shape = Rectangle | Ellipse | Diamond | Line | Arrow;
+export type Shape = Rectangle | Ellipse | Diamond | Line | Arrow | Pencil;

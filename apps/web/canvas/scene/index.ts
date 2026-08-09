@@ -5,4 +5,5 @@ export * from './Ellipse';
 export * from './Diamond';
 export * from './Line';
 export * from './Arrow';
+export * from './Pencil';
 export * from './bounds';
