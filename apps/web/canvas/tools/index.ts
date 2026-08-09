@@ -6,3 +6,4 @@ export * from './EllipseTool';
 export * from './DiamondTool';
 export * from './LineTool';
 export * from './ArrowTool';
+export * from './PencilTool';

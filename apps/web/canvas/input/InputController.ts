@@ -245,6 +245,9 @@ export class InputController {
         case '6':
           this.getToolContext().setActiveTool('arrow');
           break;
+        case 'p':
+          this.getToolContext().setActiveTool('pencil');
+          break;
       }
     }
 

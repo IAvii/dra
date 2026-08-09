@@ -5,6 +5,7 @@ import { EllipseTool } from './EllipseTool';
 import { DiamondTool } from './DiamondTool';
 import { LineTool } from './LineTool';
 import { ArrowTool } from './ArrowTool';
+import { PencilTool } from './PencilTool';
 import { ToolType } from '@draw/stores/tools';
 
 export class ToolManager {
@@ -18,6 +19,7 @@ export class ToolManager {
     this.registerTool(new DiamondTool());
     this.registerTool(new LineTool());
     this.registerTool(new ArrowTool());
+    this.registerTool(new PencilTool());
   }
 
   private registerTool(tool: Tool): void {

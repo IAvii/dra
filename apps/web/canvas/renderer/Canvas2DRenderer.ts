@@ -1,5 +1,5 @@
 import { Scene } from '../scene';
-import { Rectangle, Ellipse, Diamond, Line, Arrow, ShapeType } from '../scene';
+import { Rectangle, Ellipse, Diamond, Line, Arrow, Pencil, ShapeType } from '../scene';
 import { Camera } from '../camera';
 
 export class Canvas2DRenderer {
@@ -112,6 +112,9 @@ export class Canvas2DRenderer {
         case ShapeType.Arrow:
           this.renderArrow(shape);
           break;
+        case ShapeType.Pencil:
+          this.renderPencil(shape);
+          break;
       }
     }
   }
@@ -192,6 +195,40 @@ export class Canvas2DRenderer {
       endY - headLength * Math.sin(angle + Math.PI / 6),
     );
     this.ctx.stroke();
+  }
+
+  private renderPencil(pencil: Pencil): void {
+    if (!pencil.points || pencil.points.length < 2) return;
+
+    const strokeColor = pencil.strokeColor ?? '#1e1e1e';
+    const strokeWidth = pencil.strokeWidth ?? 2;
+    const opacity = pencil.opacity ?? 1;
+
+    this.ctx.save();
+    this.ctx.globalAlpha = opacity;
+    this.ctx.strokeStyle = strokeColor;
+    this.ctx.lineWidth = strokeWidth;
+    this.ctx.lineCap = 'round';
+    this.ctx.lineJoin = 'round';
+
+    const pts = pencil.points;
+    this.ctx.beginPath();
+    this.ctx.moveTo(pts[0]![0], pts[0]![1]);
+
+    // Draw quadratic bezier curves through midpoints of consecutive pairs.
+    for (let i = 1; i < pts.length - 1; i++) {
+      const curr = pts[i]!;
+      const next = pts[i + 1]!;
+      const midX = (curr[0] + next[0]) / 2;
+      const midY = (curr[1] + next[1]) / 2;
+      this.ctx.quadraticCurveTo(curr[0], curr[1], midX, midY);
+    }
+
+    // Connect to the final point.
+    const last = pts[pts.length - 1]!;
+    this.ctx.lineTo(last[0], last[1]);
+    this.ctx.stroke();
+    this.ctx.restore();
   }
 
   private renderSelectedShapeBounds(scene: Scene, selectedShapeIds: readonly string[]): void {
