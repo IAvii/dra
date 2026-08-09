@@ -48,15 +48,18 @@ export class ArrowTool implements Tool {
 
     const shape = ctx.scene.getShapeById(this.currentShapeId);
     if (shape && shape.type === ShapeType.Arrow) {
+      const x = Math.min(this.startX, this.startX + dx);
+      const y = Math.min(this.startY, this.startY + dy);
+
       ctx.scene.updateShape({
         ...shape,
-        x: this.startX,
-        y: this.startY,
+        x,
+        y,
         width: Math.abs(dx),
         height: Math.abs(dy),
         points: [
-          [0, 0],
-          [dx, dy],
+          [this.startX - x, this.startY - y],
+          [this.startX + dx - x, this.startY + dy - y],
         ],
       });
       ctx.invalidate();

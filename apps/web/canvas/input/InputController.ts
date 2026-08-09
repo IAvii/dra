@@ -269,9 +269,11 @@ export class InputController {
         } else {
           this.history.undo(this.getToolContext().scene);
         }
+        this.invalidate();
       } else if (event.key.toLowerCase() === 'y') {
         event.preventDefault();
         this.history.redo(this.getToolContext().scene);
+        this.invalidate();
       }
     }
   };

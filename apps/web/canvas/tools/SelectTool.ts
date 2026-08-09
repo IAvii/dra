@@ -279,12 +279,20 @@ export class SelectTool implements Tool {
         break;
     }
 
+    let newPoints: [number, number][] | undefined;
+    if (initial.type === 'line' || initial.type === 'arrow') {
+      const scaleX = initial.width === 0 ? 1 : newW / initial.width;
+      const scaleY = initial.height === 0 ? 1 : newH / initial.height;
+      newPoints = initial.points.map((p) => [(p[0] ?? 0) * scaleX, (p[1] ?? 0) * scaleY]);
+    }
+
     ctx.scene.updateShape({
       ...initial,
       x: newX,
       y: newY,
       width: newW,
       height: newH,
+      ...(newPoints ? { points: newPoints } : {}),
     });
     ctx.invalidate();
   }
